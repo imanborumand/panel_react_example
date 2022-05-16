@@ -12,6 +12,8 @@ import Login from "./Layouts/pages/oauth/Login";
 
 import AppReducer from "./Reducers/AppReducer";
 import AdminContext from "./Contexts/Admin/AdminContext";
+import LoadingPanel from "./Components/Loading/LoadingPanel";
+import {ToastContainer} from "react-toastify";
 
 
 
@@ -28,9 +30,10 @@ function getToken(state) {
 function App() {
 
   const [state, dispatchApp] = useReducer(AppReducer,
-      {authenticated: false,
-          countMessages: 0})
-
+      {
+          authenticated: false,
+          countMessages: 0,
+      loading: false})
 
 
   // const user = useContext(UserContext)
@@ -50,39 +53,49 @@ function App() {
   if(!state.authenticated) {
 
       return (
-          <AdminContext.Provider value={{dispatchApp}}>
-              <Login/>
-          </AdminContext.Provider>
+          <BrowserRouter>
+              <AdminContext.Provider value={{dispatchApp}}>
+                  <Login/>
+              </AdminContext.Provider>
+          </BrowserRouter>
       )
   }
 
   return (
-      <div className="wrapper">
-          <AdminContext.Provider value={{dispatchApp}}>
+        <>
+            {
+                state.loading ? <LoadingPanel/> : ''
+            }
+            <ToastContainer />
+            <div className="wrapper">
+                <AdminContext.Provider value={{dispatchApp}}>
 
-                  <BrowserRouter>
+                    <BrowserRouter>
 
-                      <NavPanel />
-                      <div className="content-wrapper">
-                          <BreadcrumbPanel/>
-                          <section className="content">
-                              <div className="container-fluid">
-                                  <Routes>
-                                      <Route path="/" element={<DashboardPanel />}/>
-                                      <Route path="settings" element={<SettingsPanel />}/>
-                                  </Routes>
-                              </div>
-                          </section>
+                        <NavPanel />
+                        <div className="content-wrapper">
 
-                      </div>
 
-                      <SidebarPanel />
-                      <FooterPanel />
+                            <BreadcrumbPanel/>
+                            <section className="content">
+                                <div className="container-fluid">
+                                    <Routes>
+                                        <Route path="/" element={<DashboardPanel />}/>
+                                        <Route path="settings" element={<SettingsPanel />}/>
+                                    </Routes>
+                                </div>
+                            </section>
 
-                  </BrowserRouter>
+                        </div>
 
-          </AdminContext.Provider>
-      </div>
+                        <SidebarPanel />
+                        <FooterPanel />
+
+                    </BrowserRouter>
+
+                </AdminContext.Provider>
+            </div>
+        </>
   );
 }
 

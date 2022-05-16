@@ -1,4 +1,5 @@
 function AppReducer(state, action) {
+
     const stateActionAppReducer = {
         state: state,
         action: action
@@ -12,6 +13,11 @@ function AppReducer(state, action) {
                 ...state,
                 authenticated : false
             }
+        case 'change_loading':
+            return {
+                ...state,
+                loading : action.payload.loading
+            }
         default:
             return state;
     }
@@ -21,7 +27,7 @@ function AppReducer(state, action) {
 function setToken(stateAction) {
 
     localStorage.setItem("admin_token", JSON.stringify(stateAction.action.payload.token));
-    localStorage.setItem("admin", JSON.stringify(stateAction.action.payload.admin));
+    localStorage.setItem("admin_info", JSON.stringify(stateAction.action.payload.admin));
 
     return {
         ...stateAction.state,

@@ -1,7 +1,8 @@
 import {useContext, useState} from "react";
 import AdminContext from "../../../Contexts/Admin/AdminContext";
 import axios from "axios";
-import {Router} from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
 
@@ -9,7 +10,7 @@ export default function Login() {
     const [email, setEmail] =   useState('')
     const [password, setPassword] = useState('')
 
-
+    let navigate = useNavigate();
     const adminContext = useContext(AdminContext)
 
 
@@ -18,7 +19,7 @@ export default function Login() {
         e.preventDefault()
         setLoading(true)
 
-        axios.post('/login', {
+        axios.post('/auth/login', {
             email: email,
             password: password
         }).then(function (res) {
@@ -26,14 +27,17 @@ export default function Login() {
 
             adminContext.dispatchApp({type: 'admin_login', payload: {
                     token: res.data.token,
-                    admin: res.data.user
-                }})
+                    admin: res.data.admin
+            }})
 
             document.body.className = 'hold-transition sidebar-mini layout-fixed';
-            window.location.href = "/";
+            navigate("/", { replace: true });
+            axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.token; //set token
 
         }).catch(function (err) {
-            console.log(err)
+            if(err.response.status == 422) {
+                alert(err.response.data.message)
+            }
             setLoading(false)
         })
     }

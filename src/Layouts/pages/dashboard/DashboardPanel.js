@@ -1,74 +1,57 @@
 
+import axios from "axios";
+import Boxes from "../../../Components/Elements/Boxes";
+import {useContext, useEffect, useState} from "react";
+import AdminContext from "../../../Contexts/Admin/AdminContext";
+import {toast} from 'react-toastify';
+
+
 
 export default function DashboardPanel() {
+    
+    let adminContext = useContext(AdminContext)
+    const [boxes , setBoxes] = useState([])
+
+    useEffect(() => {
+
+        adminContext.dispatchApp({type: 'change_loading', payload: {
+                loading: true,
+            }})
+
+
+        axios.get("dashboard").then(function (res) {
+
+            setBoxes(res.data.boxes)
+            adminContext.dispatchApp({type: 'change_loading', payload: {
+                    loading: false,
+                }})
+            toast.success("اطلاعات با موفقیت دریافت شد", {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }).then(function (err) {
+           if (err) {
+               toast.error("خطایی در دریافت اطلاعات رخ داده است!", {
+                   position: toast.POSITION.TOP_CENTER
+               });
+           }
+        })
+    }, [])
+
+
 
     return (
         <>
+            <div className="row">
 
-                <div className="row">
-                    <div className="col-lg-3 col-6">
+                {
+                    boxes.length ?
+                            boxes.map((value, i) => {
+                                    console.log(value)
+                                    return (<Boxes key={i}  />)
+                                })   : ''
+                }
 
-                        <div className="small-box bg-info">
-                            <div className="inner">
-                                <h3>150</h3>
 
-                                <p>New Orders</p>
-                            </div>
-                            <div className="icon">
-                                <i className="ion ion-bag"></i>
-                            </div>
-                            <a href="#" className="small-box-footer">More info <i
-                                className="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div className="col-lg-3 col-6">
-
-                        <div className="small-box bg-success">
-                            <div className="inner">
-                                <h3>53<sup>%</sup></h3>
-
-                                <p>Bounce Rate</p>
-                            </div>
-                            <div className="icon">
-                                <i className="ion ion-stats-bars"></i>
-                            </div>
-                            <a href="#" className="small-box-footer">More info <i
-                                className="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div className="col-lg-3 col-6">
-
-                        <div className="small-box bg-warning">
-                            <div className="inner">
-                                <h3>44</h3>
-
-                                <p>User Registrations</p>
-                            </div>
-                            <div className="icon">
-                                <i className="ion ion-person-add"></i>
-                            </div>
-                            <a href="#" className="small-box-footer">More info <i
-                                className="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div className="col-lg-3 col-6">
-
-                        <div className="small-box bg-danger">
-                            <div className="inner">
-                                <h3>65</h3>
-
-                                <p>Unique Visitors</p>
-                            </div>
-                            <div className="icon">
-                                <i className="ion ion-pie-graph"></i>
-                            </div>
-                            <a href="#" className="small-box-footer">More info <i
-                                className="fas fa-arrow-circle-right"></i></a>
-                        </div>
-                    </div>
 
                 </div>
 
