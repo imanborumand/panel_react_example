@@ -35,9 +35,10 @@ export default function Login() {
             axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.token; //set token
 
         }).catch(function (err) {
-            if(err.response.status == 422) {
-                alert(err.response.data.message)
-            }
+            console.log(err)
+            // if(err.response.status == 422) {
+            //     alert(err.response.data.message)
+            // }
             setLoading(false)
         })
     }

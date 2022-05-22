@@ -8,12 +8,30 @@ import reportWebVitals from './reportWebVitals';
 import axios from "axios";
 
 
+
 axios.defaults.baseURL = 'http://localhost:8055/api/admin';
 let token= localStorage.getItem('admin_token')
 
 if(token) {
 axios.defaults.headers.common['Authorization'] =  "Bearer ".concat( token.replace('\"',"").replace('\"',""))
 }
+
+
+//set axios interceptor request
+axios.interceptors.request.use((config) => {
+    if (document.getElementById("loadingIman")) document.getElementById("loadingIman").style.display = "block";
+
+    return config;
+});
+
+//set axios interceptor response
+axios.interceptors.response.use(function (response) {
+    if (document.getElementById("loadingIman")) document.getElementById("loadingIman").style.display = "none";
+    return response;
+}, function (error) {
+    if (document.getElementById("loadingIman")) document.getElementById("loadingIman").style.display = "none";
+    return Promise.reject(error);
+});
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

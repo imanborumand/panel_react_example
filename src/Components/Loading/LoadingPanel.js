@@ -9,4 +9,11 @@ function LoadingPanel()
     );
 }
 
+export function  showOrHideLoading(context, status)
+{
+    context.dispatchApp({type: 'change_loading', payload: {
+            loading: status,
+        }})
+}
+
 export default LoadingPanel

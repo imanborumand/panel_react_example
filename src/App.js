@@ -14,6 +14,7 @@ import AppReducer from "./Reducers/AppReducer";
 import AdminContext from "./Contexts/Admin/AdminContext";
 import LoadingPanel from "./Components/Loading/LoadingPanel";
 import {ToastContainer} from "react-toastify";
+import UserListPanel from "./Layouts/pages/User/UserListPanel";
 
 
 
@@ -63,9 +64,10 @@ function App() {
 
   return (
         <>
-            {
-                state.loading ? <LoadingPanel/> : ''
-            }
+            <LoadingPanel/>
+            {/*{*/}
+            {/*    state.loading ? <LoadingPanel/> : ''*/}
+            {/*}*/}
             <ToastContainer />
             <div className="wrapper">
                 <AdminContext.Provider value={{dispatchApp}}>
@@ -82,6 +84,7 @@ function App() {
                                     <Routes>
                                         <Route path="/" element={<DashboardPanel />}/>
                                         <Route path="settings" element={<SettingsPanel />}/>
+                                        <Route path="users" element={<UserListPanel />}/>
                                     </Routes>
                                 </div>
                             </section>

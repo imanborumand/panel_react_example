@@ -52,6 +52,16 @@ export default function SidebarPanel()
                         </li>
 
                         <li className="nav-item">
+                            <NavLink to="/users" className="nav-link"  >
+                                <i className="nav-icon fas fa-th"></i>
+                                <p>
+                                    Users
+                                </p>
+                            </NavLink>
+                        </li>
+
+
+                        <li className="nav-item">
                             <a  href="#" onClick={logout} className="nav-link"  >
                                 <i className="nav-icon fas fa-user"></i>
                                 <p>

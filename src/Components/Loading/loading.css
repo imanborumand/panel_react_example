@@ -1,4 +1,5 @@
 #loadingIman{
+    display: none;
     position: fixed;
     z-index: 100;
     background: #00000078;
